@@ -7,6 +7,13 @@ A lightweight, self-hosted RSS/Atom feed reader built with ASP.NET Core Minimal 
 ## Architecture
 
 ![Architecture](docs/images/image.png)
+
+## Screenshots
+
+| Desktop | Phone | Phone Sidebar |
+|---------|-------|---------------|
+| ![Desktop](docs/images/pc.png) | ![Phone](docs/images/phone.png) | ![Phone Sidebar](docs/images/phone_sidebar.png) |
+
 ## Tech Stack
 
 | Layer | Technology |
