@@ -2,7 +2,7 @@
 
 A lightweight, self-hosted RSS/Atom feed reader built with ASP.NET Core Minimal API. Aggregates articles from your favorite websites into a clean, distraction-free reading experience with dark mode, search, and date filtering.
 
-**[Live Demo](https://rss-reader-production-ec37.up.railway.app/)**
+**[Live Demo](https://deb-rss-reader-production.up.railway.app/)**
 
 ## Architecture
 
