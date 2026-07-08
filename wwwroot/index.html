@@ -342,6 +342,20 @@
   article .content a { color: var(--teal); }
   [data-theme="dark"] article .content a { color: #5FD1BC; }
   article .content img { max-width: 100%; height: auto; border-radius: 8px; margin: 10px 0; }
+  article .content.collapsed { max-height: 250px; overflow: hidden; position: relative; }
+  article .content.collapsed::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(transparent, var(--card));
+    pointer-events: none;
+  }
+  .read-more {
+    display: inline; color: var(--coral); cursor: pointer;
+    font-size: 0.85rem; font-weight: 500;
+  }
+  .read-more:hover { text-decoration: underline; }
 
   .badge {
     display: inline-flex; align-items: center; gap: 5px;
@@ -783,8 +797,19 @@ function renderArticles(articles) {
         <span>🕐 ${date}</span>
       </div>
       <div class="content">${a.content || ''}</div>
+      <span class="read-more" style="display:none">... Read more</span>
     `;
     articlesEl.appendChild(el);
+    const contentEl = el.querySelector('.content');
+    const readMoreEl = el.querySelector('.read-more');
+    if (contentEl.scrollHeight > 250) {
+      contentEl.classList.add('collapsed');
+      readMoreEl.style.display = '';
+      readMoreEl.onclick = () => {
+        contentEl.classList.remove('collapsed');
+        readMoreEl.style.display = 'none';
+      };
+    }
   }
 }
 
