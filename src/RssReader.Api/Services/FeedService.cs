@@ -7,11 +7,13 @@ namespace RssReader.Api.Services;
 public class FeedService
 {
     private readonly StorageService _store;
+    private readonly HttpClient _http;
     private static readonly HtmlSanitizer _sanitizer = new();
 
-    public FeedService(StorageService store)
+    public FeedService(StorageService store, HttpClient http)
     {
         _store = store;
+        _http = http;
     }
 
     public async Task<Models.Feed> AddFeedAsync(string url)
@@ -33,19 +35,26 @@ public class FeedService
         var feed = await _store.GetFeedAsync(feedId)
             ?? throw new InvalidOperationException("Feed not found");
 
-        var parsed = await FeedReader.ReadAsync(feed.Url);
-
-        var articles = parsed.Items.Select(item => new Article
+        try
         {
-            Id = Guid.NewGuid().ToString(),
-            FeedId = feedId,
-            Title = item.Title ?? "",
-            Description = _sanitizer.Sanitize(item.Description ?? item.Content ?? ""),
-            Link = item.Link ?? "",
-            Author = item.Author ?? "",
-            PublishedAt = item.PublishingDate ?? DateTime.UtcNow
-        });
+            var xml = await _http.GetStringAsync(feed.Url);
+            var parsed = FeedReader.ReadFromString(xml); // this part return exceptions if there are malformed content
 
-        await _store.AddArticlesAsync(articles);
+            var articles = parsed.Items.Select(item => new Article
+            {
+                Id = Guid.NewGuid().ToString(),
+                FeedId = feedId,
+                Title = item.Title ?? "",
+                Content = _sanitizer.Sanitize(item.Content ?? item.Description ?? ""),
+                Link = item.Link ?? "",
+                Author = item.Author ?? "",
+                PublishedAt = item.PublishingDate ?? DateTime.UtcNow
+            });
+
+            await _store.AddArticlesAsync(articles);
+        }
+        catch
+        {
+        }
     }
 }
