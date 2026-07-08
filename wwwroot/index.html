@@ -330,7 +330,15 @@
   article .content {
     font-size: 0.92rem; line-height: 1.65; color: var(--text);
     word-break: break-word;
+    overflow-wrap: anywhere;
+    overflow: hidden;
   }
+  article .content * { max-width: 100% !important; box-sizing: border-box; }
+  article .content pre, article .content code {
+    white-space: pre-wrap; overflow-x: auto;
+  }
+  article .content table { display: block; overflow-x: auto; max-width: 100%; }
+  article .content iframe, article .content video { max-width: 100% !important; }
   article .content a { color: var(--teal); }
   [data-theme="dark"] article .content a { color: #5FD1BC; }
   article .content img { max-width: 100%; height: auto; border-radius: 8px; margin: 10px 0; }
