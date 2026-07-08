@@ -636,7 +636,8 @@ async function loadFeeds() {
       const btn = e.currentTarget;
       btn.textContent = '⏳';
       try {
-        await api(`/feeds/${f.id}/refresh`, { method: 'POST' });
+        const res = await api(`/feeds/${f.id}/refresh`, { method: 'POST' });
+        showToast(res?.articleCount ? `Pulled ${res.articleCount} new articles` : 'No new articles');
         currentPage = 1;
         await loadArticles(true);
       } catch (err) { showError(err.message); }
