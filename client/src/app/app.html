@@ -1,0 +1,48 @@
+<div class="backdrop" [class.show]="uiService.sidebarOpen()" (click)="uiService.sidebarOpen.set(false)" id="backdrop"></div>
+
+<div class="app-shell">
+  <app-header />
+  <app-sidebar (deleteRequested)="onDeleteRequest($event)" />
+
+  <main id="main">
+    @if (resultsSummaryText) {
+      <div class="results-summary" style="display:block">{{ resultsSummaryText }}</div>
+    }
+
+    @if (articleService.loading() && articleService.articles().length === 0) {
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:720px;margin:0 auto">
+        @for (i of [1,2,3]; track i) {
+          <div class="skeleton-card">
+            <div class="skeleton-line" style="width:60%;height:16px"></div>
+            <div class="skeleton-line" style="width:35%"></div>
+            <div class="skeleton-line" style="width:100%"></div>
+            <div class="skeleton-line" style="width:92%"></div>
+            <div class="skeleton-line" style="width:76%"></div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (showEmpty) {
+      <div class="empty-state" [innerHTML]="emptyStateHtml"></div>
+    }
+
+    <div class="article-list">
+      @for (a of articleService.articles(); track a.id) {
+        <app-article-card [article]="a" [feeds]="feedService.feeds()" [stationColorFn]="stationColor.bind(this)" />
+      }
+    </div>
+
+    @if (showPagination) {
+      <div class="pagination" style="display:flex">
+        <button (click)="prevPage()" [disabled]="articleService.page() === 1">◀ Previous</button>
+        <span class="page-info">Page {{ articleService.page() }} of {{ totalPages }}</span>
+        <button (click)="nextPage()" [disabled]="articleService.page() >= totalPages">Next ▶</button>
+      </div>
+    }
+  </main>
+</div>
+
+<app-toast />
+
+<app-modal [visible]="modalVisible" [message]="modalMessage" (confirm)="onConfirmDelete()" (cancel)="onCancelDelete()" />

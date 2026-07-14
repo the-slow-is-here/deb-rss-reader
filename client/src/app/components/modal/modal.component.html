@@ -1,0 +1,13 @@
+@if (visible) {
+  <div class="modal-overlay" (click)="onOverlayClick($event)">
+    <div class="modal">
+      <div class="modal-icon">⚠️</div>
+      <h3 class="modal-title">Remove Feed</h3>
+      <p class="modal-body">{{ message }}</p>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" (click)="cancel.emit()">Cancel</button>
+        <button class="modal-btn confirm" (click)="confirm.emit()">Remove</button>
+      </div>
+    </div>
+  </div>
+}

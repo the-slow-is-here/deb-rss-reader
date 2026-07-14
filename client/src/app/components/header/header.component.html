@@ -1,0 +1,22 @@
+<header>
+  <button class="icon-btn menu-toggle" (click)="uiService.toggleSidebar()" aria-label="Toggle feed list">☰</button>
+  <div class="brand">
+    <span class="brand-mark">📰</span>
+    <h1>RSS Reader</h1>
+  </div>
+  <div class="search-box">
+    <input type="text" [(ngModel)]="searchQuery" (input)="onSearchInput()" placeholder="Search articles..." autocomplete="off">
+  </div>
+  <div class="filter-wrap">
+    <button class="icon-btn" (click)="toggleFilter()" title="Date filter">📅</button>
+    <div class="filter-dropdown" [class.show]="filterOpen">
+      <label>From <input type="date" [(ngModel)]="dateFrom"></label>
+      <label>To <input type="date" [(ngModel)]="dateTo"></label>
+      <div class="row">
+        <button class="apply" (click)="applyFilter()">Apply</button>
+        <button class="clear" (click)="clearFilter()">Clear</button>
+      </div>
+    </div>
+  </div>
+  <button class="icon-btn" (click)="themeService.toggle()" title="Toggle dark/light mode">{{ themeService.icon() }}</button>
+</header>

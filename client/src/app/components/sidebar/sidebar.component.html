@@ -1,0 +1,44 @@
+<aside id="sidebar" [class.open]="uiService.sidebarOpen()">
+  <div class="sidebar-brand">
+    <span class="brand-mark">📰</span>
+    <h2>RSS Reader</h2>
+  </div>
+
+  <div class="sidebar-section">
+    <h3 class="eyebrow">Add Feed</h3>
+    <div class="input-group">
+      <input type="url" [(ngModel)]="url" (keydown.enter)="addFeed()" placeholder="https://example.com/rss.xml" autocomplete="url">
+      <button class="btn-primary" (click)="addFeed()" [disabled]="addDisabled">Add</button>
+    </div>
+  </div>
+
+  <div class="sidebar-section feeds-list">
+    <h3 class="eyebrow">Feeds <span class="feed-count">{{ feedService.feeds().length }}</span></h3>
+    <div class="feeds-scroll">
+      <div class="feed-item all-feeds" [class.selected]="feedService.allMode()"
+           (click)="feedService.toggleAllMode(); articleService.loadArticles(true, feedService.getSelectedIdsParam())">
+        <span>All Feeds</span>
+      </div>
+
+      @if (feedService.feeds().length === 0) {
+        <div class="empty-feeds">No feeds yet — add one above</div>
+      }
+
+      @for (f of feedService.feeds(); track f.id) {
+        <div class="feed-item" [class.selected]="isFeedSelected(f)"
+             (click)="feedService.toggleFeed(f.id); articleService.loadArticles(true, feedService.getSelectedIdsParam())">
+          <span class="station-dot" [style.background]="stationColor(f.id)"></span>
+          <span class="name" [title]="f.url">{{ f.title || f.url }}</span>
+          <button class="btn-action refresh" (click)="refreshFeed(f, refreshBtn); $event.stopPropagation()" #refreshBtn title="Refresh feed">↻</button>
+          <button class="btn-action delete" (click)="onDelete(f); $event.stopPropagation()" title="Remove feed">✕</button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <button class="btn-refresh-all" (click)="refreshAll()" [disabled]="refreshAllDisabled">
+      <span [class.spin]="refreshAllDisabled">↻</span> Refresh All
+    </button>
+  </div>
+</aside>

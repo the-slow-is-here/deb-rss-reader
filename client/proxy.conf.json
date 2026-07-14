@@ -1,0 +1,4 @@
+{
+  "/feeds": { "target": "http://localhost:5020", "secure": false },
+  "/articles": { "target": "http://localhost:5020", "secure": false }
+}

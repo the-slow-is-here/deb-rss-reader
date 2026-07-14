@@ -1,0 +1,18 @@
+<article>
+  <h2><a [href]="safeLink" target="_blank" rel="noopener" [innerHTML]="escapeHtml(article.title || 'Untitled')"></a> <span style="font-size:0.8em;opacity:0.5;margin-left:2px">↗</span></h2>
+  <div class="meta">
+    @if (feedName) {
+      <span class="badge" [style.background]="'color-mix(in srgb, ' + color + ' 18%, transparent)'" [style.color]="color">{{ feedName }}</span>
+      <span class="sep">·</span>
+    }
+    @if (article.author) {
+      <span>✍️ {{ article.author }}</span>
+      <span class="sep">·</span>
+    }
+    <span>🕐 {{ date }}</span>
+  </div>
+  <div class="content" [class.collapsed]="collapsed" [innerHTML]="article.content"></div>
+  @if (collapsed) {
+    <span class="read-more" (click)="expand()">... Read more</span>
+  }
+</article>

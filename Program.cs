@@ -1,7 +1,11 @@
 using RssReader.Api.Models;
 using RssReader.Api.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    Args = args,
+    WebRootPath = "wwwroot/browser"
+});
 
 builder.Services.AddSingleton<StorageService>();
 builder.Services.AddSingleton(sp => new HttpClient());
