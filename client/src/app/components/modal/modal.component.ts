@@ -9,6 +9,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class ModalComponent {
   @Input() visible = false;
   @Input() message = '';
+  @Input() title = 'Remove Feed';
+  @Input() confirmLabel = 'Remove';
   @Output() confirm = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
 

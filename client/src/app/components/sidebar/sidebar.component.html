@@ -4,41 +4,176 @@
     <h2>RSS Reader</h2>
   </div>
 
-  <div class="sidebar-section">
-    <h3 class="eyebrow">Add Feed</h3>
-    <div class="input-group">
-      <input type="url" [(ngModel)]="url" (keydown.enter)="addFeed()" placeholder="https://example.com/rss.xml" autocomplete="url">
-      <button class="btn-primary" (click)="addFeed()" [disabled]="addDisabled">Add</button>
-    </div>
+  <div class="sidebar-tabs">
+    <button [class.active]="activeTab() === 'feeds'" (click)="activeTab.set('feeds'); uiService.viewMode.set('feeds')">Feeds</button>
+    <button [class.active]="activeTab() === 'playlists'" (click)="activeTab.set('playlists'); uiService.viewMode.set('playlists')">Playlists</button>
   </div>
 
-  <div class="sidebar-section feeds-list">
-    <h3 class="eyebrow">Feeds <span class="feed-count">{{ feedService.feeds().length }}</span></h3>
-    <div class="feeds-scroll">
-      <div class="feed-item all-feeds" [class.selected]="feedService.allMode()"
-           (click)="feedService.toggleAllMode(); articleService.loadArticles(true, feedService.getSelectedIdsParam())">
-        <span>All Feeds</span>
+  <!-- ====== FEEDS ====== -->
+  @if (activeTab() === 'feeds') {
+    <div class="sidebar-section">
+      <div class="input-group">
+        <input type="url" [(ngModel)]="url" (keydown.enter)="addFeed()" placeholder="RSS / Atom URL..." autocomplete="url">
+        <button class="btn-primary" (click)="addFeed()" [disabled]="addDisabled">+ Add</button>
       </div>
-
-      @if (feedService.feeds().length === 0) {
-        <div class="empty-feeds">No feeds yet — add one above</div>
-      }
-
-      @for (f of feedService.feeds(); track f.id) {
-        <div class="feed-item" [class.selected]="isFeedSelected(f)"
-             (click)="feedService.toggleFeed(f.id); articleService.loadArticles(true, feedService.getSelectedIdsParam())">
-          <span class="station-dot" [style.background]="stationColor(f.id)"></span>
-          <span class="name" [title]="f.url">{{ f.title || f.url }}</span>
-          <button class="btn-action refresh" (click)="refreshFeed(f, refreshBtn); $event.stopPropagation()" #refreshBtn title="Refresh feed">↻</button>
-          <button class="btn-action delete" (click)="onDelete(f); $event.stopPropagation()" title="Remove feed">✕</button>
-        </div>
-      }
     </div>
-  </div>
 
-  <div class="sidebar-section">
+    <div class="sidebar-section feeds-list">
+      <div class="feeds-scroll">
+        <button class="all-feeds-btn" [class.active]="feedService.allMode()"
+                (click)="selectAllFeeds()">
+          🌐 All Feeds
+        </button>
+
+        @if (feedService.feeds().length === 0) {
+          <div class="empty-feeds">No feeds yet — add one above</div>
+        }
+
+        @for (f of feedService.feeds(); track f.id) {
+          <div class="feed-item" [class.selected]="isFeedSelected(f)"
+               (click)="feedService.toggleFeed(f.id); articleService.loadArticles(true, feedService.getSelectedIdsParam())">
+            <span class="station-dot" [style.background]="stationColor(f.id, f.color)"></span>
+            <span class="name" [title]="f.url">{{ f.title || f.url }}</span>
+            <button class="btn-action refresh" (click)="refreshFeed(f, refreshBtn); $event.stopPropagation()" #refreshBtn title="Refresh feed">↻</button>
+            <button class="btn-action star" [class.starred]="f.starred"
+                    (click)="onStarFeed(f); $event.stopPropagation()" title="Star feed">{{ f.starred ? '⭐' : '☆' }}</button>
+            <button class="btn-action settings" (click)="openFeedSettings(f); $event.stopPropagation()" title="Feed settings">⚙️</button>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ====== PLAYLISTS ====== -->
+  @if (activeTab() === 'playlists') {
+    <div class="sidebar-section">
+      <div class="input-group">
+        <input type="text" [(ngModel)]="newPlaylistName" (keydown.enter)="createPlaylist()" placeholder="New playlist name...">
+        <button class="btn-primary" (click)="createPlaylist()" [disabled]="!newPlaylistName.trim()">+ Add</button>
+      </div>
+    </div>
+
+    <div class="sidebar-section feeds-list">
+      <div class="feeds-scroll">
+        @if (playlistService.playlists().length === 0) {
+          <div class="empty-feeds">No playlists yet — create one above</div>
+        }
+
+        @for (p of playlistService.playlists(); track p.id) {
+          <div class="feed-item" [class.selected]="playlistService.selectedId() === p.id"
+               (click)="selectPlaylist(p.id)">
+            <span class="playlist-icon">{{ p.emoji || '📁' }}</span>
+            <span class="name">{{ p.name }}</span>
+            <span class="feed-count-inline">{{ p.feedCount }}</span>
+            <button class="btn-action refresh" (click)="refreshPlaylist(p.id); $event.stopPropagation()" title="Refresh playlist">↻</button>
+            <button class="btn-action star" (click)="onStarPlaylist(p); $event.stopPropagation()" title="Star playlist">{{ playlistStarred().get(p.id) ? '⭐' : '☆' }}</button>
+            <button class="btn-action settings" (click)="openPlaylistSettings(p); $event.stopPropagation()" title="Playlist settings">⚙️</button>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <div class="sidebar-section sidebar-bottom">
     <button class="btn-refresh-all" (click)="refreshAll()" [disabled]="refreshAllDisabled">
       <span [class.spin]="refreshAllDisabled">↻</span> Refresh All
     </button>
   </div>
 </aside>
+
+<!-- ====== SETTINGS OVERLAY ====== -->
+@if (settingsOpen()) {
+  <div class="settings-overlay" (click)="settingsOpen.set(false)">
+    <div class="settings-card" (click)="$event.stopPropagation()">
+
+      <!-- ====== FEED SETTINGS ====== -->
+      @if (settingsMode() === 'feed') {
+        <h3>Feed Settings</h3>
+
+        <div class="settings-row"><span class="label">Color</span></div>
+        <div class="color-picker">
+          @for (c of FEED_COLORS; track c) {
+            <span class="color-dot" [style.background]="c"
+                  [class.picked]="editColor() === c"
+                  (click)="editColor.set(editColor() === c ? null : c)"></span>
+          }
+        </div>
+
+        <div class="settings-row"><span class="label">Title</span></div>
+        <input type="text" [(ngModel)]="editTitle" placeholder="Feed title">
+
+        <div class="settings-row"><span class="label">URL</span></div>
+        <input type="text" [(ngModel)]="editUrl" placeholder="Feed URL">
+
+        <div class="settings-actions">
+          <button class="settings-btn btn-save" (click)="saveFeedSettings()">Save</button>
+          <button class="settings-btn btn-delete"
+                  (click)="deleteRequested.emit(feedService.feeds().find(f => f.id === settingsId())!); settingsOpen.set(false)">Delete</button>
+          <button class="settings-btn btn-close" (click)="settingsOpen.set(false)">Close</button>
+        </div>
+      }
+
+      <!-- ====== PLAYLIST SETTINGS ====== -->
+      @if (settingsMode() === 'playlist') {
+        <h3>Playlist Settings</h3>
+
+        <div class="settings-row"><span class="label">Icon</span></div>
+        <div class="color-picker">
+          @for (e of PLAYLIST_EMOJIS; track e) {
+            <span class="emoji-dot" [class.picked]="editEmoji() === e"
+                  (click)="editEmoji.set(e)">{{ e }}</span>
+          }
+        </div>
+
+        <div class="settings-row"><span class="label">Name</span></div>
+        <input type="text" [(ngModel)]="editTitle" placeholder="Playlist name">
+
+        <div class="settings-section-divider">Feeds in this playlist</div>
+
+        @for (pf of playlistFeeds(); track pf.id) {
+          <div class="feed-row">
+            <span>{{ pf.title || pf.url }}</span>
+            <button class="btn-action small" (click)="removeFeedFromPlaylist(pf.id)" title="Remove from playlist">−</button>
+          </div>
+        }
+
+        @if (playlistFeeds().length === 0) {
+          <div class="empty-feeds small">No feeds in this playlist yet</div>
+        }
+
+        @if (!addFeedDropdownOpen()) {
+          <button class="btn-dropdown-toggle" (click)="addFeedDropdownOpen.set(true)">+ Add Feed</button>
+        } @else {
+          <div class="settings-dropdown">
+            @for (af of availableFeeds(); track af.id) {
+              <div class="feed-row">
+                <span>{{ af.title || af.url }}</span>
+                <button class="btn-action small" (click)="addFeedToPlaylist(af.id)" title="Add to playlist">+</button>
+              </div>
+            }
+            @if (availableFeeds().length === 0) {
+              <div class="empty-feeds small">No more feeds available</div>
+            }
+          </div>
+          <button class="btn-dropdown-toggle" (click)="addFeedDropdownOpen.set(false)">− Hide</button>
+        }
+
+        <div class="settings-actions">
+          <button class="settings-btn btn-save" (click)="savePlaylistSettings()">Save</button>
+          <button class="settings-btn btn-delete" (click)="deletePlaylist(settingsId())">Delete</button>
+          <button class="settings-btn btn-close" (click)="settingsOpen.set(false)">Close</button>
+        </div>
+      }
+
+    </div>
+  </div>
+}
+
+<!-- Email Notification Popup -->
+@if (showEmailPopup()) {
+  <app-modal [visible]="showEmailPopup()" title="Email Notifications"
+    message="Would you like to receive email updates for new articles in your starred items?"
+    confirmLabel="Yes, send me emails"
+    (confirm)="enableEmailNotifications()"
+    (cancel)="closeEmailPopup()" />
+}

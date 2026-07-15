@@ -35,6 +35,7 @@ export class ArticleCardComponent implements AfterViewInit {
 
   get color(): string {
     const feed = this.feeds.find(f => f.id === this.article.feedId);
+    if (feed?.color) return feed.color;
     return feed ? this.stationColorFn(feed.id) : 'var(--teal)';
   }
 

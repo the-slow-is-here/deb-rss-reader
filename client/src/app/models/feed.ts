@@ -3,4 +3,7 @@ export interface Feed {
   title: string;
   url: string;
   addedAt: string;
+  starred: boolean;
+  emailNotifications: boolean;
+  color?: string | null;
 }

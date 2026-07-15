@@ -16,6 +16,7 @@ export class ArticleService {
   readonly searchQuery = signal('');
   readonly dateFrom = signal('');
   readonly dateTo = signal('');
+  readonly starredOnly = signal(false);
   readonly pageSize = 20;
 
   async loadArticles(replace = false, feedIdsParam: string | null = null): Promise<void> {
@@ -34,6 +35,7 @@ export class ArticleService {
     if (this.searchQuery()) params.set('q', this.searchQuery());
     if (this.dateFrom()) params.set('dateFrom', this.dateFrom());
     if (this.dateTo()) params.set('dateTo', this.dateTo());
+    if (this.starredOnly()) params.set('starred', 'true');
 
     const data = await firstValueFrom(
       this.http.get<{ articles: Article[]; totalCount: number }>(`/articles?${params}`)
