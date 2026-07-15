@@ -5,7 +5,7 @@
       <h1>RSS Reader</h1>
     </div>
     <h2>Create Account</h2>
-    @if (error) { <div class="auth-error">{{ error }}</div> }
+    @if (error()) { <div class="auth-error">{{ error() }}</div> }
     @if (backendErrors.length) {
       <div class="auth-error">
         <ul style="margin:0;padding-left:18px">
@@ -14,9 +14,9 @@
       </div>
     }
     <form (submit)="submit(); $event.preventDefault()">
-      <input type="email" [(ngModel)]="email" name="email" placeholder="Email" required autocomplete="email" (input)="clearError()">
-      <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required autocomplete="new-password" (input)="clearError()">
-      <input type="password" [(ngModel)]="confirm" name="confirm" placeholder="Confirm password" required autocomplete="new-password" (input)="clearError()">
+      <input type="email" [(ngModel)]="email" name="email" placeholder="Email" required autocomplete="email">
+      <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required autocomplete="new-password">
+      <input type="password" [(ngModel)]="confirm" name="confirm" placeholder="Confirm password" required autocomplete="new-password">
       <button class="auth-btn" type="submit" [disabled]="loading">
         {{ loading ? 'Creating account...' : 'Create Account' }}
       </button>

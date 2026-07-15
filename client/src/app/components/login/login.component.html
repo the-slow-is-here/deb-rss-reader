@@ -5,12 +5,10 @@
       <h1>RSS Reader</h1>
     </div>
     <h2>Sign In</h2>
-    @if (error) { <div class="auth-error">{{ error }}</div> }
+    @if (error()) { <div class="auth-error">{{ error() }}</div> }
     <form (submit)="submit(); $event.preventDefault()">
-      <input type="email" [(ngModel)]="email" name="email" placeholder="Email"
-             required autocomplete="email" (input)="clearError()">
-      <input type="password" [(ngModel)]="password" name="password" placeholder="Password"
-             required autocomplete="current-password" (input)="clearError()">
+      <input type="email" [(ngModel)]="email" name="email" placeholder="Email" required autocomplete="email">
+      <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required autocomplete="current-password">
       <button class="auth-btn" type="submit" [disabled]="loading">
         {{ loading ? 'Signing in...' : 'Sign In' }}
       </button>
