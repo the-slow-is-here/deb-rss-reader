@@ -9,7 +9,8 @@ import { extractErrorMessage } from '../../services/auth-error';
   selector: 'app-login',
   standalone: true,
   imports: [FormsModule, RouterLink],
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
+  styles: [`:host { position: fixed; inset: 0; z-index: 100; }`]
 })
 export class LoginComponent {
   private auth = inject(AuthService);
@@ -20,6 +21,7 @@ export class LoginComponent {
   password = '';
   error = signal('');
   loading = signal(false);
+  guestLoading = signal(false);
 
   async submit(): Promise<void> {
     this.error.set('');
@@ -33,5 +35,17 @@ export class LoginComponent {
       this.error.set(extractErrorMessage(err));
     }
     this.loading.set(false);
+  }
+
+  async guestLogin(): Promise<void> {
+    this.error.set('');
+    this.guestLoading.set(true);
+    try {
+      await this.auth.guestLogin();
+      await this.router.navigate(['/']);
+    } catch (err: any) {
+      this.error.set(extractErrorMessage(err));
+    }
+    this.guestLoading.set(false);
   }
 }

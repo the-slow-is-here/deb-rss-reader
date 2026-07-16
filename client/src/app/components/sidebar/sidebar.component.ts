@@ -1,9 +1,11 @@
 import { Component, inject, Output, EventEmitter, OnInit, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { FeedService } from '../../services/feed.service';
 import { ArticleService } from '../../services/article.service';
+import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { UiService } from '../../services/ui.service';
 import { PlaylistService } from '../../services/playlist.service';
@@ -20,8 +22,10 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class SidebarComponent implements OnInit {
   private http = inject(HttpClient);
+  private router = inject(Router);
   readonly feedService = inject(FeedService);
   readonly articleService = inject(ArticleService);
+  readonly authService = inject(AuthService);
   readonly toastService = inject(ToastService);
   readonly uiService = inject(UiService);
   readonly playlistService = inject(PlaylistService);
@@ -32,6 +36,8 @@ export class SidebarComponent implements OnInit {
   activeTab = signal<'feeds' | 'playlists'>('feeds');
   refreshAllDisabled = false;
   addDisabled = false;
+  guestLimitModal = signal(false);
+  guestModalType = signal<'feed' | 'star' | 'playlist'>('feed');
   url = '';
   newPlaylistName = '';
 
@@ -64,7 +70,11 @@ export class SidebarComponent implements OnInit {
     return this.feedService.selectedIds().has(f.id);
   }
 
-  ngOnInit(): void { this.playlistService.load(); }
+  ngOnInit(): void {
+    if (!this.authService.isGuest()) {
+      this.playlistService.load();
+    }
+  }
 
   selectAllFeeds(): void {
     this.feedService.allMode.set(true);
@@ -74,7 +84,27 @@ export class SidebarComponent implements OnInit {
 
   async selectFeed(f: Feed): Promise<void> {
     this.feedService.toggleFeed(f.id);
-    await this.articleService.loadArticles(true, this.feedService.getSelectedIdsParam());
+    const feedIdsParam = this.feedService.getSelectedIdsParam();
+    await this.articleService.loadArticles(true, feedIdsParam);
+
+    const singleSelected = !this.feedService.allMode()
+      && this.feedService.selectedIds().size === 1
+      && this.feedService.selectedIds().has(f.id);
+    const noFilterActive = !this.articleService.searchQuery()
+      && !this.articleService.dateFrom()
+      && !this.articleService.dateTo()
+      && !this.articleService.starredOnly();
+
+    // First-time selection can be empty if feed was just added and not refreshed yet.
+    if (singleSelected && noFilterActive && this.articleService.articles().length === 0) {
+      try {
+        await this.feedService.refreshFeed(f.id);
+        this.articleService.invalidateCache(f.id);
+        await this.articleService.loadArticles(true, feedIdsParam);
+      } catch {
+        // Keep silent; selection still succeeds even if refresh fails.
+      }
+    }
   }
 
   async selectPlaylist(id: string): Promise<void> {
@@ -103,8 +133,24 @@ export class SidebarComponent implements OnInit {
       await this.feedService.loadFeeds();
       await this.articleService.loadArticles(true, this.feedService.getSelectedIdsParam());
       this.toastService.show(this.localeService.t('toast.feedAdded'));
-    } catch (err: any) { this.toastService.show(err.message, 'error'); }
+    } catch (err: any) {
+      if (err?.error?.error === 'GUEST_FEED_LIMIT') {
+        this.guestModalType.set('feed');
+        this.guestLimitModal.set(true);
+      } else {
+        this.toastService.show(err.message || err.error?.error, 'error');
+      }
+    }
     this.addDisabled = false;
+  }
+
+  goToRegister(): void {
+    this.router.navigate(['/register'], { queryParams: { convert: true } });
+  }
+
+  onPlaylistTabLocked(): void {
+    this.guestModalType.set('playlist');
+    this.guestLimitModal.set(true);
   }
 
   async refreshFeed(f: Feed): Promise<void> {
@@ -237,6 +283,11 @@ export class SidebarComponent implements OnInit {
   playlistStarred = signal<Map<string, boolean>>(new Map());
 
   async onStarFeed(f: Feed): Promise<void> {
+    if (this.authService.isGuest()) {
+      this.guestModalType.set('star');
+      this.guestLimitModal.set(true);
+      return;
+    }
     try {
       const res = await this.feedService.starFeed(f.id);
       if (res.starred && !f.emailNotifications) {

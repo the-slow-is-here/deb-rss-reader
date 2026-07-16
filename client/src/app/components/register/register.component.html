@@ -4,7 +4,10 @@
       <span class="auth-logo">📰</span>
       <h1>RSS Reader</h1>
     </div>
-    <h2>{{ localeService.t('register.heading') }}</h2>
+    <h2>{{ isConvertMode() ? localeService.t('guest.convertHeading') : localeService.t('register.heading') }}</h2>
+    @if (isConvertMode()) {
+      <p class="convert-info" style="color:var(--text-muted);font-size:0.85rem;text-align:center;margin-bottom:16px">{{ localeService.t('guest.convertSuccess') }}</p>
+    }
     @if (error()) { <div class="auth-error">{{ error() }}</div> }
     @if (backendErrors().length) {
       <div class="auth-error">
@@ -18,9 +21,11 @@
       <input type="password" [(ngModel)]="password" name="password" [placeholder]="localeService.t('register.password')" required autocomplete="new-password">
       <input type="password" [(ngModel)]="confirm" name="confirm" [placeholder]="localeService.t('register.confirm')" required autocomplete="new-password">
       <button class="auth-btn" type="submit" [disabled]="loading()">
-        {{ loading() ? localeService.t('register.loading') : localeService.t('register.button') }}
+        {{ loading() ? localeService.t('register.loading') : isConvertMode() ? localeService.t('guest.convertButton') : localeService.t('register.button') }}
       </button>
     </form>
-    <p class="auth-switch">{{ localeService.t('register.hasAccount') }} <a routerLink="/login">{{ localeService.t('register.signIn') }}</a></p>
+    @if (!isConvertMode()) {
+      <p class="auth-switch">{{ localeService.t('register.hasAccount') }} <a routerLink="/login">{{ localeService.t('register.signIn') }}</a></p>
+    }
   </div>
 </div>

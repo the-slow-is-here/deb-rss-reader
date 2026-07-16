@@ -1,0 +1,63 @@
+<div class="backdrop" [class.show]="uiService.sidebarOpen()" (click)="uiService.sidebarOpen.set(false)" id="backdrop"></div>
+
+<div class="home-layout">
+  @if (authService.isGuest() && !guestBannerDismissed()) {
+    <div class="guest-banner" style="background:var(--coral);color:#fff;text-align:center;padding:6px 16px;font-size:0.8rem;display:flex;align-items:center;justify-content:center;gap:8px">
+      <span>{{ localeService.t('guest.infoBanner') }} · <a routerLink="/register" [queryParams]="{convert: true}" style="color:#fff;text-decoration:underline;font-weight:600">{{ localeService.t('guest.infoLink') }}</a></span>
+      <button (click)="guestBannerDismissed.set(true)" style="background:none;border:none;color:#fff;cursor:pointer;font-size:1rem;line-height:1;padding:0 4px" [title]="localeService.t('dismiss')">✕</button>
+    </div>
+  }
+
+  <div class="app-shell">
+    <app-header />
+    <app-sidebar (deleteRequested)="onDeleteRequest($event)" />
+
+  <main id="main">
+    @if (resultsSummaryText) {
+      <div class="results-summary" style="display:block">{{ resultsSummaryText }}</div>
+    }
+    @if (articleService.loading() && articleService.articles().length === 0) {
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:720px;margin:0 auto">
+        @for (i of [1,2,3]; track i) {
+          <div class="skeleton-card">
+            <div class="skeleton-line" style="width:60%;height:16px"></div>
+            <div class="skeleton-line" style="width:35%"></div>
+            <div class="skeleton-line" style="width:100%"></div>
+            <div class="skeleton-line" style="width:92%"></div>
+            <div class="skeleton-line" style="width:76%"></div>
+          </div>
+        }
+      </div>
+    }
+    @if (showEmpty) {
+      @if (feedService.feeds().length === 0) {
+        <div class="suggested-feeds-section">
+          <h3 class="suggested-feeds-heading">{{ localeService.t('empty.welcome') }}</h3>
+          <p class="suggested-feeds-sub">{{ localeService.t('empty.orPick') }}</p>
+          <app-suggested-feeds />
+        </div>
+      } @else {
+        <div class="empty-state" [innerHTML]="emptyStateHtml"></div>
+      }
+    }
+    @if (articleService.refreshing()) {
+      <div class="refresh-bar"></div>
+    }
+    <div class="article-list">
+      @for (a of articleService.articles(); track a.id) {
+        <app-article-card [article]="a" [feeds]="feedService.feeds()" [stationColorFn]="stationColor.bind(this)" />
+      }
+    </div>
+    @if (showPagination) {
+      <div class="pagination" style="display:flex">
+        <button (click)="prevPage()" [disabled]="articleService.page() === 1">{{ localeService.t('pagination.prev') }}</button>
+        <span class="page-info">{{ localeService.t('pagination.page', { current: articleService.page(), total: totalPages }) }}</span>
+        <button (click)="nextPage()" [disabled]="articleService.page() >= totalPages">{{ localeService.t('pagination.next') }}</button>
+      </div>
+    }
+    </main>
+  </div>
+</div>
+
+<app-toast />
+<app-modal [visible]="modalVisible" [title]="localeService.t('modal.removeFeed')" [confirmLabel]="localeService.t('modal.remove')" [message]="modalMessage" (confirm)="onConfirmDelete()" (cancel)="onCancelDelete()" />

@@ -1,0 +1,87 @@
+.suggested-feeds {
+  padding: 0 0 8px 0;
+}
+
+.suggested-title {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin: 0 0 10px 0;
+  font-weight: 600;
+}
+
+.suggested-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.suggested-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  transition: border-color 0.2s;
+}
+
+.suggested-card:hover {
+  border-color: var(--teal);
+}
+
+.suggested-emoji {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.suggested-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.suggested-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggested-desc {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggested-add {
+  flex-shrink: 0;
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background 0.2s;
+}
+
+.suggested-add:hover:not(:disabled) {
+  background: #0b6b5e;
+}
+
+.suggested-add:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

@@ -1,0 +1,17 @@
+<div class="suggested-feeds">
+  <h4 class="suggested-title">{{ localeService.t('suggestedFeeds.title') }}</h4>
+  <div class="suggested-grid">
+    @for (s of suggestions(); track s.url) {
+      <div class="suggested-card">
+        <span class="suggested-emoji">{{ s.emoji }}</span>
+        <div class="suggested-body">
+          <span class="suggested-name">{{ s.title }}</span>
+          <span class="suggested-desc">{{ s.description }}</span>
+        </div>
+        <button class="suggested-add" (click)="add(s.url)" [disabled]="addingUrl() === s.url">
+          {{ addingUrl() === s.url ? '...' : localeService.t('suggestedFeeds.add') }}
+        </button>
+      </div>
+    }
+  </div>
+</div>

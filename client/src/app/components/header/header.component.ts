@@ -1,5 +1,6 @@
 import { Component, inject, HostListener, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { ThemeService } from '../../services/theme.service';
@@ -21,6 +22,7 @@ import { Feed } from '../../models/feed';
 })
 export class HeaderComponent {
   private http = inject(HttpClient);
+  private router = inject(Router);
   readonly themeService = inject(ThemeService);
   readonly articleService = inject(ArticleService);
   readonly authService = inject(AuthService);
@@ -39,6 +41,8 @@ export class HeaderComponent {
   dateTo = '';
   filterOpen = false;
   private searchTimer: ReturnType<typeof setTimeout> | null = null;
+
+  goToSignIn(): void { this.router.navigate(['/login']); }
 
   openSettings(): void {
     this.digestFrequency = 24;
@@ -100,8 +104,16 @@ export class HeaderComponent {
     } catch (err: any) { this.toastService.show(err.message, 'error'); }
   }
 
+  async confirmLogout(): Promise<void> {
+    this.logoutConfirm.set(false);
+    this.settingsOpen.set(false);
+    await this.authService.logout();
+    await this.router.navigate(['/login']);
+  }
+
   @HostListener('document:click', ['$event'])
   onDocClick(e: MouseEvent): void {
-    if (!(e.target as HTMLElement).closest('.filter-wrap')) this.filterOpen = false;
+    const t = e.target as HTMLElement;
+    if (!t.closest('.filter-wrap')) this.filterOpen = false;
   }
 }

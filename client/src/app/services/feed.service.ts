@@ -19,7 +19,12 @@ export class FeedService {
   }
 
   async addFeed(url: string): Promise<void> {
-    await firstValueFrom(this.http.post(`/feeds?url=${encodeURIComponent(url)}`, null));
+    try {
+      await firstValueFrom(this.http.post(`/feeds?url=${encodeURIComponent(url)}`, null));
+    } catch (err: any) {
+      if (err?.error?.error) throw err; // rethrow with error code from body
+      throw err;
+    }
   }
 
   async removeFeed(id: string): Promise<void> {

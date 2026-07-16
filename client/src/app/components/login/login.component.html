@@ -13,6 +13,10 @@
         {{ loading() ? localeService.t('login.loading') : localeService.t('login.button') }}
       </button>
     </form>
+    <div class="divider-text"><span>or</span></div>
+    <button class="auth-btn guest-btn" (click)="guestLogin()" [disabled]="guestLoading()">
+      {{ guestLoading() ? localeService.t('login.loading') : localeService.t('guest.loginButton') }}
+    </button>
     <p class="auth-switch">{{ localeService.t('login.noAccount') }} <a routerLink="/register">{{ localeService.t('login.register') }}</a></p>
   </div>
 </div>

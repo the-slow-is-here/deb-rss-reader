@@ -6,7 +6,11 @@
 
   <div class="sidebar-tabs">
     <button [class.active]="activeTab() === 'feeds'" (click)="activeTab.set('feeds'); uiService.viewMode.set('feeds')">{{ localeService.t('tabs.feeds') }}</button>
-    <button [class.active]="activeTab() === 'playlists'" (click)="activeTab.set('playlists'); uiService.viewMode.set('playlists')">{{ localeService.t('tabs.playlists') }}</button>
+    @if (authService.isGuest()) {
+      <button class="guest-locked-tab" (click)="onPlaylistTabLocked()" [title]="localeService.t('guest.playlistsLocked')">🔒 {{ localeService.t('tabs.playlists') }}</button>
+    } @else {
+      <button [class.active]="activeTab() === 'playlists'" (click)="activeTab.set('playlists'); uiService.viewMode.set('playlists')">{{ localeService.t('tabs.playlists') }}</button>
+    }
   </div>
 
   <!-- ====== FEEDS ====== -->
@@ -26,7 +30,7 @@
         </button>
 
         @if (feedService.feeds().length === 0) {
-          <div class="empty-feeds">{{ localeService.t('feed.noFeeds') }}</div>
+          <!-- Suggested feeds moved to main body -->
         }
 
         @for (f of feedService.feeds(); track f.id) {
@@ -80,6 +84,14 @@
     </button>
   </div>
 </aside>
+
+<!-- Guest limit modal -->
+@if (guestLimitModal()) {
+  <app-modal [visible]="guestLimitModal()"
+    [title]="localeService.t(guestModalType() === 'star' ? 'guest.starTitle' : guestModalType() === 'playlist' ? 'guest.playlistTitle' : 'guest.limitTitle')"
+    [message]="localeService.t(guestModalType() === 'star' ? 'guest.starMessage' : guestModalType() === 'playlist' ? 'guest.playlistMessage' : 'guest.limitMessage')"
+    [confirmLabel]="localeService.t('guest.limitSignUp')" (confirm)="goToRegister(); guestLimitModal.set(false)" (cancel)="guestLimitModal.set(false)" />
+}
 
 <!-- ====== SETTINGS OVERLAY ====== -->
 @if (settingsOpen()) {
