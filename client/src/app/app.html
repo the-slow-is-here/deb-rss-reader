@@ -35,16 +35,16 @@
       </div>
       @if (showPagination) {
         <div class="pagination" style="display:flex">
-          <button (click)="prevPage()" [disabled]="articleService.page() === 1">◀ Previous</button>
-          <span class="page-info">Page {{ articleService.page() }} of {{ totalPages }}</span>
-          <button (click)="nextPage()" [disabled]="articleService.page() >= totalPages">Next ▶</button>
+          <button (click)="prevPage()" [disabled]="articleService.page() === 1">{{ localeService.t('pagination.prev') }}</button>
+          <span class="page-info">{{ localeService.t('pagination.page', { current: articleService.page(), total: totalPages }) }}</span>
+          <button (click)="nextPage()" [disabled]="articleService.page() >= totalPages">{{ localeService.t('pagination.next') }}</button>
         </div>
       }
     </main>
   </div>
 
   <app-toast />
-  <app-modal [visible]="modalVisible" [message]="modalMessage" (confirm)="onConfirmDelete()" (cancel)="onCancelDelete()" />
+  <app-modal [visible]="modalVisible" [title]="localeService.t('modal.removeFeed')" [confirmLabel]="localeService.t('modal.remove')" [message]="modalMessage" (confirm)="onConfirmDelete()" (cancel)="onCancelDelete()" />
 }
 
 @if (!authService.user()) {
@@ -52,5 +52,5 @@
 }
 
 @if (authService.loading()) {
-  <div class="auth-page"><h2 style="color:var(--text-muted)">Loading...</h2></div>
+  <div class="auth-page"><h2 style="color:var(--text-muted)">{{ localeService.t('loading') }}</h2></div>
 }

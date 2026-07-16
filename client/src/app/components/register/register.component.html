@@ -4,7 +4,7 @@
       <span class="auth-logo">📰</span>
       <h1>RSS Reader</h1>
     </div>
-    <h2>Create Account</h2>
+    <h2>{{ localeService.t('register.heading') }}</h2>
     @if (error()) { <div class="auth-error">{{ error() }}</div> }
     @if (backendErrors().length) {
       <div class="auth-error">
@@ -14,13 +14,13 @@
       </div>
     }
     <form (submit)="submit(); $event.preventDefault()">
-      <input type="email" [(ngModel)]="email" name="email" placeholder="Email" required autocomplete="email">
-      <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required autocomplete="new-password">
-      <input type="password" [(ngModel)]="confirm" name="confirm" placeholder="Confirm password" required autocomplete="new-password">
+      <input type="email" [(ngModel)]="email" name="email" [placeholder]="localeService.t('register.email')" required autocomplete="email">
+      <input type="password" [(ngModel)]="password" name="password" [placeholder]="localeService.t('register.password')" required autocomplete="new-password">
+      <input type="password" [(ngModel)]="confirm" name="confirm" [placeholder]="localeService.t('register.confirm')" required autocomplete="new-password">
       <button class="auth-btn" type="submit" [disabled]="loading()">
-        {{ loading() ? 'Creating account...' : 'Create Account' }}
+        {{ loading() ? localeService.t('register.loading') : localeService.t('register.button') }}
       </button>
     </form>
-    <p class="auth-switch">Already have an account? <a routerLink="/login">Sign In</a></p>
+    <p class="auth-switch">{{ localeService.t('register.hasAccount') }} <a routerLink="/login">{{ localeService.t('register.signIn') }}</a></p>
   </div>
 </div>

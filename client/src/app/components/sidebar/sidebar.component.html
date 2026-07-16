@@ -5,16 +5,16 @@
   </div>
 
   <div class="sidebar-tabs">
-    <button [class.active]="activeTab() === 'feeds'" (click)="activeTab.set('feeds'); uiService.viewMode.set('feeds')">Feeds</button>
-    <button [class.active]="activeTab() === 'playlists'" (click)="activeTab.set('playlists'); uiService.viewMode.set('playlists')">Playlists</button>
+    <button [class.active]="activeTab() === 'feeds'" (click)="activeTab.set('feeds'); uiService.viewMode.set('feeds')">{{ localeService.t('tabs.feeds') }}</button>
+    <button [class.active]="activeTab() === 'playlists'" (click)="activeTab.set('playlists'); uiService.viewMode.set('playlists')">{{ localeService.t('tabs.playlists') }}</button>
   </div>
 
   <!-- ====== FEEDS ====== -->
   @if (activeTab() === 'feeds') {
     <div class="sidebar-section">
       <div class="input-group">
-        <input type="url" [(ngModel)]="url" (keydown.enter)="addFeed()" placeholder="RSS / Atom URL..." autocomplete="url">
-        <button class="btn-primary" (click)="addFeed()" [disabled]="addDisabled">+ Add</button>
+        <input type="url" [(ngModel)]="url" (keydown.enter)="addFeed()" [placeholder]="localeService.t('feed.urlPlaceholder')" autocomplete="url">
+        <button class="btn-primary" (click)="addFeed()" [disabled]="addDisabled">{{ localeService.t('button.add') }}</button>
       </div>
     </div>
 
@@ -22,11 +22,11 @@
       <div class="feeds-scroll">
         <button class="all-feeds-btn" [class.active]="feedService.allMode()"
                 (click)="selectAllFeeds()">
-          🌐 All Feeds
+          🌐 {{ localeService.t('feed.allFeeds') }}
         </button>
 
         @if (feedService.feeds().length === 0) {
-          <div class="empty-feeds">No feeds yet — add one above</div>
+          <div class="empty-feeds">{{ localeService.t('feed.noFeeds') }}</div>
         }
 
         @for (f of feedService.feeds(); track f.id) {
@@ -34,10 +34,10 @@
                (click)="selectFeed(f)">
             <span class="station-dot" [style.background]="stationColor(f.id, f.color)"></span>
             <span class="name" [title]="f.url">{{ f.title || f.url }}</span>
-            <button class="btn-action refresh" (click)="refreshFeed(f); $event.stopPropagation()" title="Refresh feed">{{ refreshingFeedIds().has(f.id) ? '⏳' : '↻' }}</button>
+            <button class="btn-action refresh" (click)="refreshFeed(f); $event.stopPropagation()" [title]="localeService.t('feed.refreshTooltip')">{{ refreshingFeedIds().has(f.id) ? '⏳' : '↻' }}</button>
             <button class="btn-action star" [class.starred]="f.starred"
-                    (click)="onStarFeed(f); $event.stopPropagation()" title="Star feed">{{ f.starred ? '⭐' : '☆' }}</button>
-            <button class="btn-action settings" (click)="openFeedSettings(f); $event.stopPropagation()" title="Feed settings">⚙️</button>
+                    (click)="onStarFeed(f); $event.stopPropagation()" [title]="localeService.t('feed.starTooltip')">{{ f.starred ? '⭐' : '☆' }}</button>
+            <button class="btn-action settings" (click)="openFeedSettings(f); $event.stopPropagation()" [title]="localeService.t('feed.settingsTooltip')">⚙️</button>
           </div>
         }
       </div>
@@ -48,15 +48,15 @@
   @if (activeTab() === 'playlists') {
     <div class="sidebar-section">
       <div class="input-group">
-        <input type="text" [(ngModel)]="newPlaylistName" (keydown.enter)="createPlaylist()" placeholder="New playlist name...">
-        <button class="btn-primary" (click)="createPlaylist()" [disabled]="!newPlaylistName.trim()">+ Add</button>
+        <input type="text" [(ngModel)]="newPlaylistName" (keydown.enter)="createPlaylist()" [placeholder]="localeService.t('playlist.newPlaceholder')">
+        <button class="btn-primary" (click)="createPlaylist()" [disabled]="!newPlaylistName.trim()">{{ localeService.t('button.add') }}</button>
       </div>
     </div>
 
     <div class="sidebar-section feeds-list">
       <div class="feeds-scroll">
         @if (playlistService.playlists().length === 0) {
-          <div class="empty-feeds">No playlists yet — create one above</div>
+          <div class="empty-feeds">{{ localeService.t('playlist.noPlaylists') }}</div>
         }
 
         @for (p of playlistService.playlists(); track p.id) {
@@ -65,9 +65,9 @@
             <span class="playlist-icon">{{ p.emoji || '📁' }}</span>
             <span class="name">{{ p.name }}</span>
             <span class="feed-count-inline">{{ p.feedCount }}</span>
-            <button class="btn-action refresh" (click)="refreshPlaylist(p.id); $event.stopPropagation()" title="Refresh playlist">{{ refreshingPlaylistIds().has(p.id) ? '⏳' : '↻' }}</button>
-            <button class="btn-action star" (click)="onStarPlaylist(p); $event.stopPropagation()" title="Star playlist">{{ playlistStarred().get(p.id) ? '⭐' : '☆' }}</button>
-            <button class="btn-action settings" (click)="openPlaylistSettings(p); $event.stopPropagation()" title="Playlist settings">⚙️</button>
+            <button class="btn-action refresh" (click)="refreshPlaylist(p.id); $event.stopPropagation()" [title]="localeService.t('playlist.refreshTooltip')">{{ refreshingPlaylistIds().has(p.id) ? '⏳' : '↻' }}</button>
+            <button class="btn-action star" (click)="onStarPlaylist(p); $event.stopPropagation()" [title]="localeService.t('playlist.starTooltip')">{{ playlistStarred().get(p.id) ? '⭐' : '☆' }}</button>
+            <button class="btn-action settings" (click)="openPlaylistSettings(p); $event.stopPropagation()" [title]="localeService.t('playlist.settingsTooltip')">⚙️</button>
           </div>
         }
       </div>
@@ -76,7 +76,7 @@
 
   <div class="sidebar-section sidebar-bottom">
     <button class="btn-refresh-all" (click)="refreshAll()" [disabled]="refreshAllDisabled">
-      <span [class.spin]="refreshAllDisabled">↻</span> Refresh All
+      <span [class.spin]="refreshAllDisabled">↻</span> {{ localeService.t('sidebar.refreshAll') }}
     </button>
   </div>
 </aside>
@@ -88,9 +88,9 @@
 
       <!-- ====== FEED SETTINGS ====== -->
       @if (settingsMode() === 'feed') {
-        <h3>Feed Settings</h3>
+        <h3>{{ localeService.t('feedSettings.title') }}</h3>
 
-        <div class="settings-row"><span class="label">Color</span></div>
+        <div class="settings-row"><span class="label">{{ localeService.t('feedSettings.color') }}</span></div>
         <div class="color-picker">
           @for (c of FEED_COLORS; track c) {
             <span class="color-dot" [style.background]="c"
@@ -99,25 +99,25 @@
           }
         </div>
 
-        <div class="settings-row"><span class="label">Title</span></div>
-        <input type="text" [(ngModel)]="editTitle" placeholder="Feed title">
+        <div class="settings-row"><span class="label">{{ localeService.t('feedSettings.title2') }}</span></div>
+        <input type="text" [(ngModel)]="editTitle" [placeholder]="localeService.t('feedSettings.titlePlaceholder')">
 
-        <div class="settings-row"><span class="label">URL</span></div>
-        <input type="text" [(ngModel)]="editUrl" placeholder="Feed URL">
+        <div class="settings-row"><span class="label">{{ localeService.t('feedSettings.url') }}</span></div>
+        <input type="text" [(ngModel)]="editUrl" [placeholder]="localeService.t('feedSettings.urlPlaceholder')">
 
         <div class="settings-actions">
-          <button class="settings-btn btn-save" (click)="saveFeedSettings()">Save</button>
+          <button class="settings-btn btn-save" (click)="saveFeedSettings()">{{ localeService.t('button.save') }}</button>
           <button class="settings-btn btn-delete"
-                  (click)="deleteRequested.emit(feedService.feeds().find(f => f.id === settingsId())!); settingsOpen.set(false)">Delete</button>
-          <button class="settings-btn btn-close" (click)="settingsOpen.set(false)">Close</button>
+                  (click)="deleteRequested.emit(feedService.feeds().find(f => f.id === settingsId())!); settingsOpen.set(false)">{{ localeService.t('button.delete') }}</button>
+          <button class="settings-btn btn-close" (click)="settingsOpen.set(false)">{{ localeService.t('button.close') }}</button>
         </div>
       }
 
       <!-- ====== PLAYLIST SETTINGS ====== -->
       @if (settingsMode() === 'playlist') {
-        <h3>Playlist Settings</h3>
+        <h3>{{ localeService.t('playlistSettings.title') }}</h3>
 
-        <div class="settings-row"><span class="label">Icon</span></div>
+        <div class="settings-row"><span class="label">{{ localeService.t('playlistSettings.icon') }}</span></div>
         <div class="color-picker">
           @for (e of PLAYLIST_EMOJIS; track e) {
             <span class="emoji-dot" [class.picked]="editEmoji() === e"
@@ -125,43 +125,43 @@
           }
         </div>
 
-        <div class="settings-row"><span class="label">Name</span></div>
-        <input type="text" [(ngModel)]="editTitle" placeholder="Playlist name">
+        <div class="settings-row"><span class="label">{{ localeService.t('playlistSettings.name') }}</span></div>
+        <input type="text" [(ngModel)]="editTitle" [placeholder]="localeService.t('playlistSettings.namePlaceholder')">
 
-        <div class="settings-section-divider">Feeds in this playlist</div>
+        <div class="settings-section-divider">{{ localeService.t('playlistSettings.feedsIn') }}</div>
 
         @for (pf of playlistFeeds(); track pf.id) {
           <div class="feed-row">
             <span>{{ pf.title || pf.url }}</span>
-            <button class="btn-action small" (click)="removeFeedFromPlaylist(pf.id)" title="Remove from playlist">−</button>
+            <button class="btn-action small" (click)="removeFeedFromPlaylist(pf.id)" [title]="localeService.t('playlistSettings.removeFrom')">−</button>
           </div>
         }
 
         @if (playlistFeeds().length === 0) {
-          <div class="empty-feeds small">No feeds in this playlist yet</div>
+          <div class="empty-feeds small">{{ localeService.t('playlistSettings.noFeeds') }}</div>
         }
 
         @if (!addFeedDropdownOpen()) {
-          <button class="btn-dropdown-toggle" (click)="addFeedDropdownOpen.set(true)">+ Add Feed</button>
+          <button class="btn-dropdown-toggle" (click)="addFeedDropdownOpen.set(true)">{{ localeService.t('playlistSettings.addFeed') }}</button>
         } @else {
           <div class="settings-dropdown">
             @for (af of availableFeeds(); track af.id) {
               <div class="feed-row">
                 <span>{{ af.title || af.url }}</span>
-                <button class="btn-action small" (click)="addFeedToPlaylist(af.id)" title="Add to playlist">+</button>
+                <button class="btn-action small" (click)="addFeedToPlaylist(af.id)" [title]="localeService.t('playlistSettings.addTo')">+</button>
               </div>
             }
             @if (availableFeeds().length === 0) {
-              <div class="empty-feeds small">No more feeds available</div>
+              <div class="empty-feeds small">{{ localeService.t('playlistSettings.noMoreFeeds') }}</div>
             }
           </div>
-          <button class="btn-dropdown-toggle" (click)="addFeedDropdownOpen.set(false)">− Hide</button>
+          <button class="btn-dropdown-toggle" (click)="addFeedDropdownOpen.set(false)">{{ localeService.t('playlistSettings.hideFeed') }}</button>
         }
 
         <div class="settings-actions">
-          <button class="settings-btn btn-save" (click)="savePlaylistSettings()">Save</button>
-          <button class="settings-btn btn-delete" (click)="deletePlaylist(settingsId())">Delete</button>
-          <button class="settings-btn btn-close" (click)="settingsOpen.set(false)">Close</button>
+          <button class="settings-btn btn-save" (click)="savePlaylistSettings()">{{ localeService.t('button.save') }}</button>
+          <button class="settings-btn btn-delete" (click)="deletePlaylist(settingsId())">{{ localeService.t('button.delete') }}</button>
+          <button class="settings-btn btn-close" (click)="settingsOpen.set(false)">{{ localeService.t('button.close') }}</button>
         </div>
       }
 
@@ -171,9 +171,9 @@
 
 <!-- Email Notification Popup -->
 @if (showEmailPopup()) {
-  <app-modal [visible]="showEmailPopup()" title="Email Notifications"
-    message="Would you like to receive email updates for new articles in your starred items?"
-    confirmLabel="Yes, send me emails"
+  <app-modal [visible]="showEmailPopup()" [title]="localeService.t('email.title')"
+    [message]="localeService.t('email.message')"
+    [confirmLabel]="localeService.t('email.confirm')"
     (confirm)="enableEmailNotifications()"
     (cancel)="closeEmailPopup()" />
 }

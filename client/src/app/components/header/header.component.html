@@ -5,28 +5,32 @@
     <h1>RSS Reader</h1>
   </div>
   <div class="search-box">
-    <input type="text" [(ngModel)]="searchQuery" (input)="onSearchInput()" placeholder="Search articles..." autocomplete="off">
+    <input type="text" [(ngModel)]="searchQuery" (input)="onSearchInput()" [placeholder]="localeService.t('search.placeholder')" autocomplete="off">
   </div>
   <button class="icon-btn" [class.active]="articleService.starredOnly()"
           (click)="toggleStarred()" title="Show starred only">⭐</button>
   <div class="filter-wrap">
     <button class="icon-btn" (click)="toggleFilter()" title="Date filter">📅</button>
     <div class="filter-dropdown" [class.show]="filterOpen">
-      <label>From <input type="date" [(ngModel)]="dateFrom"></label>
-      <label>To <input type="date" [(ngModel)]="dateTo"></label>
+      <label>{{ localeService.t('date.from') }} <input type="date" [(ngModel)]="dateFrom"></label>
+      <label>{{ localeService.t('date.to') }} <input type="date" [(ngModel)]="dateTo"></label>
       <div class="row">
-        <button class="apply" (click)="applyFilter()">Apply</button>
-        <button class="clear" (click)="clearFilter()">Clear</button>
+        <button class="apply" (click)="applyFilter()">{{ localeService.t('button.apply') }}</button>
+        <button class="clear" (click)="clearFilter()">{{ localeService.t('button.clear') }}</button>
       </div>
     </div>
   </div>
+  <button class="icon-btn lang-toggle" (click)="localeService.toggleLocale()"
+          [title]="localeService.isRtl() ? 'English' : 'العربية'">
+    {{ localeService.isRtl() ? '🇬🇧' : '🇸🇦' }}
+  </button>
   <button class="icon-btn" (click)="themeService.toggle()" title="Toggle dark/light mode">{{ themeService.icon() }}</button>
   <button class="icon-btn" (click)="openSettings()" title="Settings">⚙️</button>
 </header>
 
 <!-- Logout confirm -->
 @if (logoutConfirm()) {
-  <app-modal [visible]="logoutConfirm()" message="Are you sure you want to log out?" title="Log Out" confirmLabel="Log out"
+  <app-modal [visible]="logoutConfirm()" [message]="localeService.t('logout.confirm')" [title]="localeService.t('logout.title')" [confirmLabel]="localeService.t('logout.button')"
     (confirm)="authService.logout(); logoutConfirm.set(false)"
     (cancel)="logoutConfirm.set(false)" />
 }
@@ -35,29 +39,29 @@
 @if (settingsOpen()) {
   <div class="settings-overlay" (click)="settingsOpen.set(false)">
     <div class="settings-card" (click)="$event.stopPropagation()">
-      <h3>Settings</h3>
+      <h3>{{ localeService.t('settings.title') }}</h3>
 
       <!-- Account -->
-      <div class="settings-section-divider" style="margin-top:0;padding-top:0;border-top:none">Account</div>
+      <div class="settings-section-divider" style="margin-top:0;padding-top:0;border-top:none">{{ localeService.t('settings.account') }}</div>
       <div class="settings-row">
         <span class="value" style="font-size:0.85rem;color:var(--text)">{{ authService.user()?.email || '—' }}</span>
       </div>
       <div class="settings-actions" style="margin-top:0">
-        <button class="settings-btn btn-save" style="background:var(--coral)" (click)="logoutConfirm.set(true)">Log out</button>
+        <button class="settings-btn btn-save" style="background:var(--coral)" (click)="logoutConfirm.set(true)">{{ localeService.t('button.logout') }}</button>
       </div>
 
       <!-- Email Digest -->
-      <div class="settings-section-divider">Email Digest</div>
-      <div class="settings-row"><span class="label">Frequency</span></div>
+      <div class="settings-section-divider">{{ localeService.t('settings.digest') }}</div>
+      <div class="settings-row"><span class="label">{{ localeService.t('settings.frequency') }}</span></div>
       <select [(ngModel)]="digestFrequency" style="width:100%;padding:8px;border:1.5px solid var(--border);border-radius:8px;font-size:0.85rem;background:var(--bg);color:var(--text);font-family:var(--font-body);margin-bottom:10px">
-        <option [ngValue]="24">Every 24 hours</option>
-        <option [ngValue]="12">Every 12 hours</option>
-        <option [ngValue]="6">Every 6 hours</option>
-        <option [ngValue]="48">Every 48 hours</option>
+        <option [ngValue]="24">{{ localeService.t('digest.24h') }}</option>
+        <option [ngValue]="12">{{ localeService.t('digest.12h') }}</option>
+        <option [ngValue]="6">{{ localeService.t('digest.6h') }}</option>
+        <option [ngValue]="48">{{ localeService.t('digest.48h') }}</option>
       </select>
 
       <!-- Notified Feeds -->
-      <div class="settings-section-divider">Notified Feeds</div>
+      <div class="settings-section-divider">{{ localeService.t('settings.notifiedFeeds') }}</div>
       <div style="max-height:160px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:6px">
         @for (f of emailFeeds(); track f.id) {
           <div class="feed-row">
@@ -66,15 +70,15 @@
           </div>
         }
         @if (emailFeeds().length === 0) {
-          <div class="empty-feeds small">No feeds yet — add some first</div>
+          <div class="empty-feeds small">{{ localeService.t('feed.noFeedsShort') }}</div>
         }
       </div>
 
       <!-- Actions -->
       <div class="settings-actions" style="margin-top:14px">
-        <button class="settings-btn btn-save" (click)="sendTestEmail()">Test Email ✉️</button>
-        <button class="settings-btn btn-save" (click)="saveDigestSettings()">Save</button>
-        <button class="settings-btn btn-close" (click)="settingsOpen.set(false)">Close</button>
+        <button class="settings-btn btn-save" (click)="sendTestEmail()">{{ localeService.t('button.testEmail') }}</button>
+        <button class="settings-btn btn-save" (click)="saveDigestSettings()">{{ localeService.t('button.save') }}</button>
+        <button class="settings-btn btn-close" (click)="settingsOpen.set(false)">{{ localeService.t('button.close') }}</button>
       </div>
     </div>
   </div>

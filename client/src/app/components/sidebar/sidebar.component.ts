@@ -7,6 +7,7 @@ import { ArticleService } from '../../services/article.service';
 import { ToastService } from '../../services/toast.service';
 import { UiService } from '../../services/ui.service';
 import { PlaylistService } from '../../services/playlist.service';
+import { LocaleService } from '../../services/locale.service';
 import { Feed } from '../../models/feed';
 import { ModalComponent } from '../modal/modal.component';
 
@@ -24,6 +25,7 @@ export class SidebarComponent implements OnInit {
   readonly toastService = inject(ToastService);
   readonly uiService = inject(UiService);
   readonly playlistService = inject(PlaylistService);
+  readonly localeService = inject(LocaleService);
 
   @Output() deleteRequested = new EventEmitter<Feed>();
 
@@ -100,6 +102,7 @@ export class SidebarComponent implements OnInit {
       this.url = '';
       await this.feedService.loadFeeds();
       await this.articleService.loadArticles(true, this.feedService.getSelectedIdsParam());
+      this.toastService.show(this.localeService.t('toast.feedAdded'));
     } catch (err: any) { this.toastService.show(err.message, 'error'); }
     this.addDisabled = false;
   }
@@ -109,7 +112,7 @@ export class SidebarComponent implements OnInit {
     this.refreshingFeedIds.update(s => { s.add(f.id); return new Set(s); });
     try {
       const res = await this.feedService.refreshFeed(f.id);
-      this.toastService.show(res.articleCount ? `Pulled ${res.articleCount} new articles` : 'No new articles');
+      this.toastService.show(res.articleCount ? this.localeService.t('toast.pulledArticles', { count: res.articleCount }) : this.localeService.t('toast.noNewArticles'));
       this.articleService.invalidateCache(f.id);
       await this.articleService.loadArticles(true, this.feedService.getSelectedIdsParam());
     } catch (err: any) { this.toastService.show(err.message, 'error'); }
@@ -192,8 +195,8 @@ export class SidebarComponent implements OnInit {
     this.refreshingPlaylistIds.update(s => { s.add(id); return new Set(s); });
     try {
       const res = await this.playlistService.refresh(id);
-      let msg = res.articleCount ? `Pulled ${res.articleCount} new articles` : 'No new articles';
-      if (res?.failed?.length) msg += ` — ${res.failed.length} feeds failed`;
+      let msg = res.articleCount ? this.localeService.t('toast.pulledArticles', { count: res.articleCount }) : this.localeService.t('toast.noNewArticles');
+      if (res?.failed?.length) msg += this.localeService.t('toast.feedsFailed', { count: res.failed.length });
       this.toastService.show(msg, res?.failed?.length ? 'error' : 'success');
       // Invalidate cache and reload with the playlist's feed IDs
       this.articleService.invalidateCache();
@@ -218,8 +221,8 @@ export class SidebarComponent implements OnInit {
     this.refreshAllDisabled = true;
     try {
       const res = await this.feedService.refreshAll();
-      let msg = res?.articleCount ? `Pulled ${res.articleCount} new articles` : 'No new articles';
-      if (res?.failed?.length) msg += ` — ${res.failed.length} feeds failed`;
+      let msg = res?.articleCount ? this.localeService.t('toast.pulledArticles', { count: res.articleCount }) : this.localeService.t('toast.noNewArticles');
+      if (res?.failed?.length) msg += this.localeService.t('toast.feedsFailed', { count: res.failed.length });
       this.toastService.show(msg, res?.failed?.length ? 'error' : 'success');
       this.articleService.invalidateCache();
       await this.articleService.loadArticles(true, this.feedService.getSelectedIdsParam());

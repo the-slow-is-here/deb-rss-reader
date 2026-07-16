@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { FeedService } from '../../services/feed.service';
 import { UiService } from '../../services/ui.service';
 import { ToastService } from '../../services/toast.service';
+import { LocaleService } from '../../services/locale.service';
 import { ModalComponent } from '../modal/modal.component';
 import { Feed } from '../../models/feed';
 
@@ -26,6 +27,7 @@ export class HeaderComponent {
   readonly uiService = inject(UiService);
   readonly feedService = inject(FeedService);
   readonly toastService = inject(ToastService);
+  readonly localeService = inject(LocaleService);
 
   logoutConfirm = signal(false);
   settingsOpen = signal(false);

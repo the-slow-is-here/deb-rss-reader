@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { LocaleService } from '../../services/locale.service';
 
 @Component({
   selector: 'app-modal',
@@ -7,6 +8,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent {
+  readonly localeService = inject(LocaleService);
   @Input() visible = false;
   @Input() message = '';
   @Input() title = 'Remove Feed';

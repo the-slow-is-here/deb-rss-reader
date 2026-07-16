@@ -4,15 +4,15 @@
       <span class="auth-logo">📰</span>
       <h1>RSS Reader</h1>
     </div>
-    <h2>Sign In</h2>
+    <h2>{{ localeService.t('login.heading') }}</h2>
     @if (error()) { <div class="auth-error">{{ error() }}</div> }
     <form (submit)="submit(); $event.preventDefault()">
-      <input type="email" [(ngModel)]="email" name="email" placeholder="Email" required autocomplete="email">
-      <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required autocomplete="current-password">
+      <input type="email" [(ngModel)]="email" name="email" [placeholder]="localeService.t('login.email')" required autocomplete="email">
+      <input type="password" [(ngModel)]="password" name="password" [placeholder]="localeService.t('login.password')" required autocomplete="current-password">
       <button class="auth-btn" type="submit" [disabled]="loading()">
-        {{ loading() ? 'Signing in...' : 'Sign In' }}
+        {{ loading() ? localeService.t('login.loading') : localeService.t('login.button') }}
       </button>
     </form>
-    <p class="auth-switch">Don't have an account? <a routerLink="/register">Register</a></p>
+    <p class="auth-switch">{{ localeService.t('login.noAccount') }} <a routerLink="/register">{{ localeService.t('login.register') }}</a></p>
   </div>
 </div>

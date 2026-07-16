@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" target-language="de" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="8939439311237226522" datatype="html">
+        <source>Are you sure you want to remove &quot;<x id="PH" equiv-text="f.title || f.url"/>&quot;:FEED_NAME:?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+        <note priority="1" from="description">Ask user to confirm before removing feed</note>
+        <note priority="1" from="meaning">Remove feed confirmation</note>
+      </trans-unit>
+      <trans-unit id="6917599794039666011" datatype="html">
+        <source>Feed removed</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">102</context>
+        </context-group>
+        <note priority="1" from="description">Success message when feed is deleted</note>
+      </trans-unit>
+      <trans-unit id="2509319023124455413" datatype="html">
+        <source>No matches found</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">133</context>
+        </context-group>
+        <note priority="1" from="description">No results found for search</note>
+        <note priority="1" from="meaning">Search empty state</note>
+      </trans-unit>
+      <trans-unit id="7716901325167941261" datatype="html">
+        <source> for &amp;ldquo;&lt;strong&gt;<x id="SEARCH_TER" equiv-text="this.escapeHtml(q)"/>M:&lt;/strong&gt;&amp;rdquo;</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">135</context>
+        </context-group>
+        <note priority="1" from="description">Appears before the quoted search term in &quot;No matches for X&quot;</note>
+        <note priority="1" from="meaning">Search query prefix in empty state</note>
+      </trans-unit>
+      <trans-unit id="5422696493527078150" datatype="html">
+        <source> in the selected date range</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">136</context>
+        </context-group>
+        <note priority="1" from="description">Appended when a date filter is active</note>
+        <note priority="1" from="meaning">Date range suffix in empty state</note>
+      </trans-unit>
+      <trans-unit id="710422128622416740" datatype="html">
+        <source>Try adjusting your search or clearing the filters.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">138</context>
+        </context-group>
+        <note priority="1" from="description">Hint below the &quot;no matches&quot; message</note>
+        <note priority="1" from="meaning">Search empty hint</note>
+      </trans-unit>
+      <trans-unit id="3007787413527833375" datatype="html">
+        <source>No playlist selected</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">143</context>
+        </context-group>
+        <note priority="1" from="description">No playlist selected</note>
+      </trans-unit>
+      <trans-unit id="2666255070856259988" datatype="html">
+        <source>Choose a playlist from the sidebar to see its articles.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">143</context>
+        </context-group>
+        <note priority="1" from="description">No playlist selected hint</note>
+      </trans-unit>
+      <trans-unit id="4852922686163750951" datatype="html">
+        <source>This playlist has no articles</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">148</context>
+        </context-group>
+        <note priority="1" from="description">Playlist empty</note>
+      </trans-unit>
+      <trans-unit id="2495278758215993121" datatype="html">
+        <source>Hit &lt;strong&gt;↻&lt;/strong&gt; beside the playlist to pull in the latest articles.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">148</context>
+        </context-group>
+        <note priority="1" from="description">Hint tells user to refresh the playlist</note>
+        <note priority="1" from="meaning">Playlist empty hint</note>
+      </trans-unit>
+      <trans-unit id="6355125876102933847" datatype="html">
+        <source>No feed selected</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">153</context>
+        </context-group>
+        <note priority="1" from="description">No feed selected</note>
+      </trans-unit>
+      <trans-unit id="6802905876717555822" datatype="html">
+        <source>Choose feeds from the sidebar or select &lt;strong&gt;All Feeds&lt;/strong&gt; to see articles.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">153</context>
+        </context-group>
+        <note priority="1" from="description">No feed selected hint</note>
+      </trans-unit>
+      <trans-unit id="6622344225560607567" datatype="html">
+        <source>This feed has no articles</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">158</context>
+        </context-group>
+        <note priority="1" from="description">Single feed empty</note>
+      </trans-unit>
+      <trans-unit id="1422377710434498906" datatype="html">
+        <source>Hit &lt;strong&gt;↻&lt;/strong&gt; beside the feed to pull in the latest articles.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">158</context>
+        </context-group>
+        <note priority="1" from="description">Hint tells user to refresh</note>
+        <note priority="1" from="meaning">Single feed empty hint</note>
+      </trans-unit>
+      <trans-unit id="3595022554064351525" datatype="html">
+        <source>No starred articles</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">163</context>
+        </context-group>
+        <note priority="1" from="description">No starred articles</note>
+      </trans-unit>
+      <trans-unit id="5776411927136194980" datatype="html">
+        <source>Star some feeds (click ☆) to see them here.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">163</context>
+        </context-group>
+        <note priority="1" from="description">No starred articles hint</note>
+      </trans-unit>
+      <trans-unit id="199007409075948618" datatype="html">
+        <source>Add a feed and hit &lt;strong&gt;↻ Refresh All&lt;/strong&gt; to pull in the latest articles.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">168</context>
+        </context-group>
+        <note priority="1" from="description">Shown when user has no feeds</note>
+        <note priority="1" from="meaning">First boot</note>
+      </trans-unit>
+      <trans-unit id="7284804992570679849" datatype="html">
+        <source>No articles found</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">172</context>
+        </context-group>
+        <note priority="1" from="description">All feeds empty</note>
+      </trans-unit>
+      <trans-unit id="1803415527291599616" datatype="html">
+        <source>Hit &lt;strong&gt;↻ Refresh All&lt;/strong&gt; or the &lt;strong&gt;↻&lt;/strong&gt; button beside a feed to pull in the latest.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">172</context>
+        </context-group>
+        <note priority="1" from="description">All feeds empty hint</note>
+      </trans-unit>
+      <trans-unit id="2720863042119915320" datatype="html">
+        <source>⭐ starred feeds</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">186</context>
+        </context-group>
+        <note priority="1" from="description">Starred filter label in results summary</note>
+      </trans-unit>
+      <trans-unit id="739047018697307411" datatype="html">
+        <source><x id="FRO" equiv-text="df"/>M: – <x id="TO" equiv-text="dt"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">189</context>
+        </context-group>
+        <note priority="1" from="description">From date to date</note>
+        <note priority="1" from="meaning">Date range separator</note>
+      </trans-unit>
+      <trans-unit id="2835516480015615699" datatype="html">
+        <source>since <x id="FROM" equiv-text="df"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">190</context>
+        </context-group>
+        <note priority="1" from="description">Results since a specific date</note>
+        <note priority="1" from="meaning">Since date</note>
+      </trans-unit>
+      <trans-unit id="1930883457970219525" datatype="html">
+        <source>until <x id="TO" equiv-text="dt"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">191</context>
+        </context-group>
+        <note priority="1" from="description">Results until a specific date</note>
+        <note priority="1" from="meaning">Until date</note>
+      </trans-unit>
+      <trans-unit id="339214420419927785" datatype="html">
+        <source>Found <x id="COUN" equiv-text="this.articleService.totalCount()"/>T: results for <x id="FILTERS" equiv-text="parts.join(&apos; · &apos;)"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">193</context>
+        </context-group>
+        <note priority="1" from="description">Shows count and active filters</note>
+        <note priority="1" from="meaning">Results summary</note>
+      </trans-unit>
+      <trans-unit id="6127112879228759253" datatype="html">
+        <source>Email and password are required.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+        <note priority="1" from="description">Email and password required</note>
+        <note priority="1" from="meaning">Login validation</note>
+      </trans-unit>
+      <trans-unit id="5922213225673487977" datatype="html">
+        <source>Please enter a valid email address.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <note priority="1" from="description">Invalid email format</note>
+        <note priority="1" from="meaning">Login email validation</note>
+      </trans-unit>
+      <trans-unit id="265345573167878806" datatype="html">
+        <source>Remove Feed</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/modal/modal.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <note priority="1" from="description">Default modal title</note>
+      </trans-unit>
+      <trans-unit id="4814285799071780083" datatype="html">
+        <source>Remove</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/modal/modal.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <note priority="1" from="description">Default modal confirm</note>
+      </trans-unit>
+      <trans-unit id="1369969750063503581" datatype="html">
+        <source>Email and password are required.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/register/register.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <note priority="1" from="description">Email and password required</note>
+        <note priority="1" from="meaning">Register validation</note>
+      </trans-unit>
+      <trans-unit id="7124729403466885313" datatype="html">
+        <source>Please enter a valid email address.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/register/register.component.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <note priority="1" from="description">Invalid email</note>
+        <note priority="1" from="meaning">Register email validation</note>
+      </trans-unit>
+      <trans-unit id="1543538730036692975" datatype="html">
+        <source>Passwords do not match.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/register/register.component.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <note priority="1" from="description">Register password mismatch</note>
+      </trans-unit>
+      <trans-unit id="5637746436473555505" datatype="html">
+        <source>Pulled <x id="COUN" equiv-text="res.articleCount"/>T: new articles</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">113</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">196</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">222</context>
+        </context-group>
+        <note priority="1" from="description">New articles pulled count</note>
+      </trans-unit>
+      <trans-unit id="8039716747954197827" datatype="html">
+        <source>No new articles</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">113</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">196</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">222</context>
+        </context-group>
+        <note priority="1" from="description">No new articles</note>
+      </trans-unit>
+      <trans-unit id="2399413707542776118" datatype="html">
+        <source> — <x id="COUN" equiv-text="res.failed.length"/>T: feeds failed</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">197</context>
+        </context-group>
+        <note priority="1" from="description">Shows how many feeds in a playlist failed to refresh</note>
+        <note priority="1" from="meaning">Failed feeds count in toast</note>
+      </trans-unit>
+      <trans-unit id="6738919615405049350" datatype="html">
+        <source> — <x id="COUN" equiv-text="res.failed.length"/>T: feeds failed</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">223</context>
+        </context-group>
+        <note priority="1" from="description">Failed count in refresh all</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

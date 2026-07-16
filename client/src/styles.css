@@ -82,7 +82,7 @@ header {
   box-shadow: 0 2px 12px rgba(0,0,0,0.15);
 }
 [data-theme="dark"] header { background: #0A1917; }
-.brand { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+.brand { display: flex; align-items: center; gap: 10px; margin-inline-end: auto; }
 .brand-mark { font-size: 1.4rem; line-height: 1; }
 .brand h1 {
   font-family: var(--font-display);
@@ -120,7 +120,7 @@ header {
 .filter-wrap { position: relative; }
 .filter-dropdown {
   display: none;
-  position: absolute; top: calc(100% + 8px); right: 0;
+  position: absolute; top: calc(100% + 8px); inset-inline-end: 0;
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 12px; padding: 14px; min-width: 220px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.2); z-index: 50;
@@ -167,7 +167,7 @@ header {
 aside {
   grid-column: 1; grid-row: 2;
   background: var(--surface);
-  border-right: 1px solid var(--border);
+  border-inline-end: 1px solid var(--border);
   position: sticky;
   top: var(--header-height);
   height: calc(100vh - var(--header-height));
@@ -242,7 +242,7 @@ aside {
 .feed-count {
   font-family: var(--font-mono); font-size: 0.68rem;
   color: var(--text-muted); background: var(--cream-dim);
-  padding: 1px 7px; border-radius: 20px; margin-left: auto;
+  padding: 1px 7px; border-radius: 20px; margin-inline-start: auto;
 }
 
 .feed-item {
@@ -250,11 +250,11 @@ aside {
   padding: 8px 8px; border-radius: 10px;
   cursor: pointer; transition: background 0.12s, border-color 0.12s;
   margin-bottom: 2px; font-size: 0.86rem;
-  border-left: 3px solid transparent;
+  border-inline-start: 3px solid transparent;
 }
 .feed-item:hover { background: var(--cream-dim); }
 .feed-item.selected {
-  border-left-color: var(--coral);
+  border-inline-start-color: var(--coral);
   background: var(--coral-tint);
   font-weight: 500;
 }
@@ -262,7 +262,7 @@ aside {
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   flex: 1; min-width: 0;
 }
-.feed-item .station-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-right: 6px; }
+.feed-item .station-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-inline-end: 6px; }
 
 .feed-item.all-feeds {
   border-bottom: 1px solid var(--border);
@@ -272,7 +272,7 @@ aside {
 }
 .feed-item.all-feeds:hover { background: transparent; }
 .feed-item.all-feeds.selected {
-  border-left-color: var(--teal);
+  border-inline-start-color: var(--teal);
   background: var(--teal-tint);
 }
 
@@ -282,7 +282,7 @@ aside {
   border-radius: 10px; background: var(--surface); color: var(--text);
   cursor: pointer; font-size: 0.88rem; font-weight: 600;
   font-family: var(--font-display); transition: all 0.15s; margin-bottom: 10px;
-  text-align: left;
+  text-align: start;
 }
 .all-feeds-btn.active {
   border-color: var(--teal); background: var(--teal-tint); color: var(--teal);
@@ -353,7 +353,7 @@ article .content.collapsed { max-height: 250px; overflow: hidden; position: rela
 article .content.collapsed::after {
   content: '';
   position: absolute;
-  bottom: 0; left: 0; right: 0;
+  bottom: 0; inset-inline-start: 0; inset-inline-end: 0;
   height: 60px;
   background: linear-gradient(transparent, var(--card));
   pointer-events: none;
@@ -418,7 +418,7 @@ article .content.collapsed::after {
 
 /* ---------- toasts ---------- */
 .toast-stack {
-  position: fixed; top: calc(var(--header-height) + 12px); left: 50%; transform: translateX(-50%);
+  position: fixed; top: calc(var(--header-height) + 12px); inset-inline-start: 50%; transform: translateX(-50%);
   display: flex; flex-direction: column; gap: 10px;
   z-index: 999; max-width: min(400px, calc(100vw - 40px));
 }
@@ -430,8 +430,8 @@ article .content.collapsed::after {
   animation: toast-in 0.25s ease both;
 }
 [data-theme="dark"] .toast { background: #0A1917; }
-.toast.success { border-left: 3px solid var(--teal); }
-.toast.error { border-left: 3px solid var(--coral); }
+.toast.success { border-inline-start: 3px solid var(--teal); }
+.toast.error { border-inline-start: 3px solid var(--coral); }
 .toast .icon { font-size: 1rem; line-height: 1.3; display: none; }
 .toast .msg { flex: 1; line-height: 1.4; }
 @keyframes toast-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
@@ -490,7 +490,7 @@ article .content.collapsed::after {
   background: var(--teal);
   opacity: 0.06;
   top: -120px;
-  right: -120px;
+  inset-inline-end: -120px;
 }
 .auth-page::after {
   content: '';
@@ -500,7 +500,7 @@ article .content.collapsed::after {
   background: var(--coral);
   opacity: 0.06;
   bottom: -80px;
-  left: -80px;
+  inset-inline-start: -80px;
 }
 .auth-card {
   background: var(--surface); border: 1px solid var(--border);
@@ -537,7 +537,7 @@ article .content.collapsed::after {
 .auth-error {
   background: var(--coral-tint); color: var(--coral-dark);
   padding: 10px; border-radius: 8px;
-  font-size: 0.82rem; margin-bottom: 14px; text-align: left;
+  font-size: 0.82rem; margin-bottom: 14px; text-align: start;
 }
 .auth-switch { font-size: 0.84rem; color: var(--text-muted); margin-top: 16px; }
 .auth-switch a { color: var(--teal); text-decoration: none; font-weight: 500; }
@@ -570,12 +570,12 @@ article .content.collapsed::after {
 .sidebar-bottom { margin-top: auto; }
 
 /* ---------- playlist inline items ---------- */
-.playlist-icon { font-size: 0.9rem; margin-right: 4px; }
+.playlist-icon { font-size: 0.9rem; margin-inline-end: 4px; }
 .feed-count-inline {
   font-family: var(--font-mono); font-size: 0.68rem;
   color: var(--text-muted); background: var(--cream-dim);
   padding: 1px 7px; border-radius: 20px;
-  margin-left: auto; margin-right: 4px;
+  margin-inline-start: auto; margin-inline-end: 4px;
 }
 
 /* ---------- settings overlay ---------- */
@@ -677,7 +677,7 @@ article .content.collapsed::after {
 @media (max-width: 899px) {
   .app-shell { grid-template-columns: 1fr; }
   aside {
-    position: fixed; top: 0; left: 0; bottom: 0;
+    position: fixed; top: 0; inset-inline-start: 0; bottom: 0;
     width: min(320px, 86vw); height: 100%;
     z-index: 30;
     transform: translateX(-105%);
@@ -695,7 +695,7 @@ article .content.collapsed::after {
 }
 @media (max-width: 480px) {
   article { padding: 18px 16px; }
-  .toast-stack { left: 12px; right: 12px; transform: none; max-width: none; }
+  .toast-stack { inset-inline-start: 12px; inset-inline-end: 12px; transform: none; max-width: none; }
   .pagination { font-size: 0.78rem; gap: 8px; flex-wrap: wrap; justify-content: center; padding-bottom: 24px; }
   .pagination button { padding: 6px 10px; font-size: 0.78rem; }
 }
@@ -708,12 +708,87 @@ article .content.collapsed::after {
 .refresh-bar {
   position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   height: 2px;
   z-index: 10;
   background: linear-gradient(90deg, transparent, var(--coral), var(--gold), var(--teal), transparent);
   animation: refresh-slide 1.8s ease-in-out infinite;
   border-radius: 1px;
   margin-bottom: -2px; /* overlap with article list without pushing content */
+}
+
+/* ---------- language dropdown ---------- */
+.lang-wrap {
+  position: relative;
+}
+.lang-dropdown {
+  display: none;
+  position: absolute;
+  inset-inline-end: 0;
+  top: 100%;
+  margin-top: 6px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  min-width: 170px;
+  z-index: 50;
+  overflow: hidden;
+}
+.lang-dropdown.show {
+  display: block;
+}
+.lang-dropdown button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-family: var(--font-body);
+  cursor: pointer;
+  text-align: start;
+  transition: background 0.15s;
+}
+.lang-dropdown button:hover {
+  background: var(--ink);
+  color: var(--cream);
+}
+.lang-dropdown button.active {
+  background: var(--teal);
+  color: #fff;
+}
+.lang-dropdown .check {
+  margin-inline-start: auto;
+  font-weight: 700;
+}
+
+/* ---------- RTL (Arabic) overrides ---------- */
+[dir="rtl"] {
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Naskh Arabic', sans-serif;
+  --font-display: 'Fraunces', Georgia, 'Noto Naskh Arabic', serif;
+}
+
+/* Mobile sidebar: slide from right instead of left */
+@media (max-width: 899px) {
+  [dir="rtl"] aside {
+    transform: translateX(105%);
+  }
+  [dir="rtl"] aside.open {
+    transform: translateX(0);
+  }
+}
+
+/* Reverse gradient for skeleton shimmer */
+[dir="rtl"] .skeleton-line {
+  animation-direction: reverse;
+}
+
+/* Article content auto-direction for mixed LTR/RTL feed content */
+[dir="rtl"] article .content {
+  direction: auto;
 }
