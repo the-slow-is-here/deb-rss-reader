@@ -1,6 +1,5 @@
-<div class="backdrop" [class.show]="uiService.sidebarOpen()" (click)="uiService.sidebarOpen.set(false)" id="backdrop"></div>
-
 <div class="home-layout">
+  <div class="backdrop" [class.show]="uiService.sidebarOpen()" (click)="uiService.sidebarOpen.set(false)"></div>
   @if (authService.isGuest() && !guestBannerDismissed()) {
     <div class="guest-banner" style="background:var(--coral);color:#fff;text-align:center;padding:6px 16px;font-size:0.8rem;display:flex;align-items:center;justify-content:center;gap:8px">
       <span>{{ localeService.t('guest.infoBanner') }} · <a routerLink="/register" [queryParams]="{convert: true}" style="color:#fff;text-decoration:underline;font-weight:600">{{ localeService.t('guest.infoLink') }}</a></span>
