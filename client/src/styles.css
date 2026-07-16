@@ -83,7 +83,7 @@ header {
   box-shadow: 0 2px 12px rgba(0,0,0,0.15);
 }
 [data-theme="dark"] header { background: #0A1917; }
-.brand { display: flex; align-items: center; gap: 10px; margin-inline-end: auto; }
+.brand { display: flex; align-items: center; gap: 10px; }
 .brand-mark { font-size: 1.4rem; line-height: 1; }
 .brand h1 {
   font-family: var(--font-display);
@@ -737,23 +737,23 @@ article .content.collapsed::after {
     width: min(320px, 86vw); height: 100%;
     z-index: 30;
     transform: translateX(-105%);
-    transition: transform 0.28s ease;
+    transition: none;
     padding-top: 16px;
     box-shadow: 0 0 40px rgba(0,0,0,0.25);
     pointer-events: auto;
   }
-  aside.open { transform: translateX(0); }
+  aside.open { transform: translateX(0); transition: transform 0.28s ease; }
   .sidebar-brand { display: flex; }
   main { grid-column: 1; padding: 18px 14px 50px; }
   header { padding: 0 8px; gap: 6px; }
   .brand h1 { font-size: 1.08rem; }
   .brand .brand-mark { display: none; }
-  .search-box { flex: 0 0 auto; width: 175px; gap: 2px; }
+  .search-box { flex: 1; min-width: 0; width: auto; gap: 2px; }
   .search-box input { padding: 6px 8px; font-size: 0.78rem; }
   @media (max-width: 600px) { .brand { display: none; } }
 }
 @media (max-width: 480px) {
-  .search-box { flex: 0 0 auto; width: 155px; }
+  .search-box { flex: 1; min-width: 0; width: auto; }
   .search-box input { padding: 5px 6px; font-size: 0.73rem; }
   article { padding: 18px 16px; }
   .toast-stack { inset-inline-start: 12px; inset-inline-end: 12px; transform: none; max-width: none; }
@@ -840,9 +840,11 @@ article .content.collapsed::after {
     left: auto;
     right: 0;
     transform: translateX(105%);
+    transition: none;
   }
   [dir="rtl"] aside.open {
     transform: translateX(0);
+    transition: transform 0.28s ease;
   }
 }
 
