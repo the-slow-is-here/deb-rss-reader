@@ -65,7 +65,7 @@ public static class AuthEndpoints
             return Results.Ok(new { email = (string?)null, isGuest = true });
         });
 
-        app.MapPost("/auth/convert", async (AuthRequest req, UserManager<User> userManager, ClaimsPrincipal principal) =>
+        app.MapPost("/auth/convert", async (AuthRequest req, UserManager<User> userManager, SignInManager<User> signIn, ClaimsPrincipal principal) =>
         {
             var userId = principal.GetUserId();
             var user = await userManager.FindByIdAsync(userId);
@@ -92,16 +92,22 @@ public static class AuthEndpoints
             if (!result.Succeeded)
                 return Results.BadRequest(new { errors = result.Errors.Select(e => e.Description), error = result.Errors.First().Description });
 
-            // Remove old email claim and add new ones
+            // Update claims in the database
             var existingClaims = await userManager.GetClaimsAsync(user);
             var oldEmailClaim = existingClaims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
             if (oldEmailClaim != null)
                 await userManager.RemoveClaimAsync(user, oldEmailClaim);
             await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, req.Email));
-
-            // Re-sign in with updated claims
             await userManager.RemoveClaimAsync(user, new Claim("IsGuest", "true"));
             await userManager.AddClaimAsync(user, new Claim("IsGuest", "false"));
+
+            // Re-issue the auth cookie with updated claims so the user is no longer seen as a guest
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.Email, req.Email),
+                new("IsGuest", "false")
+            };
+            await signIn.SignInWithClaimsAsync(user, isPersistent: true, claims);
 
             return Results.Ok(new { email = req.Email, isGuest = false });
         }).RequireAuthorization();
